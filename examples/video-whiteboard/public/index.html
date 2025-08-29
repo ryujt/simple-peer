@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple-Peer Video & Whiteboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🎥 Video Conference & Whiteboard</h1>
+            <div class="room-info">
+                <span id="roomId"></span>
+                <button id="copyRoomBtn" class="btn-secondary">📋 Copy Room ID</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="video-container">
+                    <video id="localVideo" autoplay muted playsinline></video>
+                    <div class="video-label">You</div>
+                    <div class="video-controls">
+                        <button id="toggleVideo" class="control-btn active" title="Toggle Video">
+                            <span class="video-on">📹</span>
+                            <span class="video-off" style="display:none">📹</span>
+                        </button>
+                        <button id="toggleAudio" class="control-btn active" title="Toggle Audio">
+                            <span class="audio-on">🎤</span>
+                            <span class="audio-off" style="display:none">🔇</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <video id="remoteVideo" autoplay playsinline></video>
+                    <div class="video-label">Remote User</div>
+                    <div id="waitingMessage" class="waiting-message">
+                        Waiting for peer to connect...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Whiteboard Section -->
+            <div class="whiteboard-section">
+                <div class="whiteboard-header">
+                    <h3>🎨 Shared Whiteboard</h3>
+                    <div class="whiteboard-controls">
+                        <div class="color-picker">
+                            <button class="color-btn active" data-color="#000000" style="background: #000000"></button>
+                            <button class="color-btn" data-color="#FF0000" style="background: #FF0000"></button>
+                            <button class="color-btn" data-color="#00FF00" style="background: #00FF00"></button>
+                            <button class="color-btn" data-color="#0000FF" style="background: #0000FF"></button>
+                            <button class="color-btn" data-color="#FFFF00" style="background: #FFFF00"></button>
+                            <button class="color-btn" data-color="#FF00FF" style="background: #FF00FF"></button>
+                            <button class="color-btn" data-color="#00FFFF" style="background: #00FFFF"></button>
+                        </div>
+                        <div class="size-picker">
+                            <label>Size:</label>
+                            <input type="range" id="brushSize" min="1" max="20" value="3">
+                            <span id="sizeValue">3</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button id="eraserBtn" class="btn-tool">🧹 Eraser</button>
+                            <button id="undoBtn" class="btn-tool">↩️ Undo</button>
+                            <button id="clearBtn" class="btn-tool">🗑️ Clear</button>
+                            <button id="downloadBtn" class="btn-tool">💾 Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="whiteboard"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-section">
+            <div class="chat-header">
+                <h3>💬 Chat</h3>
+            </div>
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type a message..." />
+                <button id="sendBtn" class="btn-primary">Send</button>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div id="connectionStatus" class="connection-status">
+            <span class="status-indicator"></span>
+            <span class="status-text">Connecting...</span>
+        </div>
+    </div>
+
+    <!-- Room Entry Modal -->
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <h2>Join or Create Room</h2>
+            <input type="text" id="roomInput" placeholder="Enter room ID (leave empty for new room)" />
+            <button id="joinBtn" class="btn-primary">Join Room</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-peer@9/simplepeer.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
